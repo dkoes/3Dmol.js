@@ -1,0 +1,11 @@
+@<TRIPOS>MOLECULE
+Dimensions = 3; PeriodicDimensions = 2; BoxShape = parallelepiped; LatticeVectors[Ang] = [    2.502813    0.000000    0.000000], [   -1.251407    2.167500    0.000000], [    0.000000    0.000000   21.167088]
+ 2 1 0 0 0
+SMALL
+GASTEIGER
+
+@<TRIPOS>ATOM
+      1 B           0.0000    0.0000    0.0000 B       1  UNL1        0.0000
+      2 N           1.2514   -0.7225    0.0000 N.3     1  UNL1        0.0000
+@<TRIPOS>BOND
+     1     1     2    1

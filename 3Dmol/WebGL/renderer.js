@@ -21,16 +21,16 @@ $3Dmol.Renderer = function(parameters) {
             : true, _preserveDrawingBuffer = parameters.preserveDrawingBuffer !== undefined ? parameters.preserveDrawingBuffer
             : false, _clearColor = parameters.clearColor !== undefined ? new $3Dmol.Color(
             parameters.clearColor) : new $3Dmol.Color(0x000000),
-             _clearAlpha = parameters.clearAlpha !== undefined ? parameters.clearAlpha : 0, 
+             _clearAlpha = parameters.clearAlpha !== undefined ? parameters.clearAlpha : 0,
             _outlineMaterial = new $3Dmol.MeshOutlineMaterial(parameters.outline),
             _outlineSphereImposterMaterial = new $3Dmol.SphereImposterOutlineMaterial(parameters.outline),
             _outlineStickImposterMaterial = new $3Dmol.StickImposterOutlineMaterial(parameters.outline),
             _outlineEnabled = !!parameters.outline
             ;
-    this.domElement = _canvas;    
+    this.domElement = _canvas;
     this.context = null;
     this.devicePixelRatio = 1.0; //set in setSize
-        
+
     _canvas.id=parameters.id;
     this.autoClear = true;
     this.autoClearColor = true;
@@ -71,12 +71,12 @@ $3Dmol.Renderer = function(parameters) {
     // internal state cache
     _currentProgram = null,
     _currentMaterialId = -1, _currentGeometryGroupHash = null, _currentCamera = null, _geometryGroupCounter = 0,
-      
+
     // GL state cache
     _oldDoubleSided = -1, _oldFlipSided = -1,
     _oldBlending = -1,
     _oldDepthTest = -1, _oldDepthWrite = -1,
-    _oldPolygonOffset = null, 
+    _oldPolygonOffset = null,
     _oldLineWidth = null,
 
     _viewportWidth = 0, _viewportHeight = 0, _currentWidth = 0, _currentHeight = 0,
@@ -130,12 +130,12 @@ $3Dmol.Renderer = function(parameters) {
     var _screenshader = null;
     var _vertexattribpos = null;
     var _screenQuadVBO = null;
-    
+
     //framebuffer variables
     var _fb = null;
     var _targetTexture = null;
     var _depthTexture = null;
-    
+
     // initialize
     var _gl;
 
@@ -149,13 +149,13 @@ $3Dmol.Renderer = function(parameters) {
     var _extColorBufferFloat = _gl.getExtension('EXT_color_buffer_float');
 
     // API
-    
+
     this.supportedExtensions = function() {
         return {supportsAIA: Boolean(_extInstanced),
             supportsImposters:  Boolean(_extFragDepth) || !isWebGL1()
             };
     };
-    
+
     this.getContext = function() {
         return _gl;
     };
@@ -187,7 +187,7 @@ $3Dmol.Renderer = function(parameters) {
 
             var wid = _canvas.width/this.cols;
             var hei = _canvas.height/this.rows;
-           
+
             _viewportWidth =  wid;
             _viewportHeight = hei;
 
@@ -197,14 +197,14 @@ $3Dmol.Renderer = function(parameters) {
 
         }
     };
-        
+
     this.setSize = function(width, height) {
         //zooming (in the browser) changes the pixel ratio and width/height
         this.devicePixelRatio = (window.devicePixelRatio !== undefined) ? window.devicePixelRatio : 1;
         //with antialiasing on (which doesn't seem to do much), render at double rsolution to eliminate jaggies
 	//my iphone crashes if we do though, so as a hacky workaround, don't do it with retina displays
         if(_antialias && this.devicePixelRatio < 2.0) this.devicePixelRatio *= 2.0;
-        
+
         if(this.rows != undefined && this.cols != undefined && this.row != undefined && this.col != undefined){
             var wid = width/this.cols;
             var hei = height/this.rows;
@@ -253,7 +253,7 @@ $3Dmol.Renderer = function(parameters) {
 
         var doubleSided = material.side === $3Dmol.DoubleSide;
         var flipSided = material.side === $3Dmol.BackSide;
-        
+
         if(!material.imposter) //ignore reflection with imposters
             flipSided = reflected ? !flipSided : flipSided;
 
@@ -289,7 +289,7 @@ $3Dmol.Renderer = function(parameters) {
 
         }
 
-        _gl.cullFace(_gl.BACK); 
+        _gl.cullFace(_gl.BACK);
 
     };
 
@@ -372,7 +372,7 @@ $3Dmol.Renderer = function(parameters) {
             _oldLineWidth = width;
         }
     }
-    
+
     var deallocateGeometry = function(geometry) {
 
         geometry.__webglInit = undefined;
@@ -497,7 +497,7 @@ $3Dmol.Renderer = function(parameters) {
         }
 
     };
-    
+
 
     var onGeometryDispose = function(event) {
 
@@ -548,7 +548,7 @@ $3Dmol.Renderer = function(parameters) {
             str = str.replace(/texture2D/g,"texture");
             str = str.replace(/\/\/DEFINEFRAGCOLOR/g,'out vec4 glFragColor;');
             str = str.replace(/gl_FragColor/g,"glFragColor");
-            str = "#version 300 es\n"+str;            
+            str = "#version 300 es\n"+str;
         }
         if (type === "fragment")
             shader = _gl.createShader(_gl.FRAGMENT_SHADER);
@@ -603,7 +603,7 @@ $3Dmol.Renderer = function(parameters) {
 
         // check if program requires webgl2
         if (isWebGL1()){
-            if (parameters.volumetric) 
+            if (parameters.volumetric)
                 throw new Error("Volumetric rendering requires webgl2 which is not supported by your hardware.");
         }
 
@@ -616,7 +616,7 @@ $3Dmol.Renderer = function(parameters) {
         var precision = _precision;
         var prefix = "precision " + precision + " float;";
 
-        var prefix_vertex = [ 
+        var prefix_vertex = [
                 parameters.volumetric ? "#version 300 es" : "", prefix ]
                 .join("\n");
 
@@ -647,7 +647,7 @@ $3Dmol.Renderer = function(parameters) {
         var identifiers, u, i;
 
         // uniform vars
-        identifiers = [ 'viewMatrix', 'modelViewMatrix', 'projectionMatrix', 
+        identifiers = [ 'viewMatrix', 'modelViewMatrix', 'projectionMatrix',
                 'normalMatrix'];
 
         // custom uniform vars
@@ -801,8 +801,7 @@ $3Dmol.Renderer = function(parameters) {
                 m_uniforms.directionalLightColor.value = _lights.directional.colors;
                 m_uniforms.directionalLightDirection.value = _lights.directional.positions;
             } else if (material.shaderID === "volumetric") {
-                
-                //need a matrix that maps back from model coordinates to texture coordinates
+
                 //  textureMat*modelInv*position
                 object._modelViewMatrix.getScale(_direction); //scale factor of conversion
                 _worldInverse.getInverse(object._modelViewMatrix);
@@ -810,7 +809,8 @@ $3Dmol.Renderer = function(parameters) {
                 _textureMatrix.multiplyMatrices(object.material.texmatrix,_worldInverse);
                 _gl.uniformMatrix4fv(p_uniforms.textmat, false, _textureMatrix.elements);
                 _gl.uniformMatrix4fv(p_uniforms.projinv, false, _projInverse.elements);
-                
+                // Matrix that maps back from model coordinates to texture coordinates
+                _gl.uniformMatrix4fv(p_uniforms.textmap, false, object.material.textmap.elements);
                 //  need the resolution (step size of ray in viewer coordinates)
                 let invscale = Math.min(Math.min(_direction.x,_direction.y),_direction.z);
                 m_uniforms.step.value = object.material.unit*invscale;
@@ -1073,16 +1073,16 @@ $3Dmol.Renderer = function(parameters) {
 
                 _this.renderBuffer(camera, lights, fog, material, buffer,
                         object);
-                if (_outlineEnabled || material.outline) {                  
+                if (_outlineEnabled || material.outline) {
                     if(material.shaderID == 'sphereimposter') {
                         _this.renderBuffer(camera, lights, fog, _outlineSphereImposterMaterial,
-                                buffer, object);                        
+                                buffer, object);
                     }
                     else if(material.shaderID == 'stickimposter') {
                         _this.renderBuffer(camera, lights, fog, _outlineStickImposterMaterial,
-                                buffer, object);                        
+                                buffer, object);
                     }
-                    else if(!material.wireframe                
+                    else if(!material.wireframe
                         && material.shaderID !== 'basic'
                         && material.opacity !== 0.0) {
                         _this.renderBuffer(camera, lights, fog, _outlineMaterial,
@@ -1145,13 +1145,13 @@ $3Dmol.Renderer = function(parameters) {
         _currentHeight = _viewportHeight;
         this.setViewport();
         this.setFrameBuffer();
-        
+
         if (this.autoClear || forceClear) {
             _gl.clearColor(_clearColor.r, _clearColor.g, _clearColor.b, _clearAlpha);
             this.clear(this.autoClearColor, this.autoClearDepth, this.autoClearStencil);
         }
-        
-        
+
+
         // set matrices for regular objects (frustum culled)
 
         renderList = scene.__webglObjects;
@@ -1181,10 +1181,10 @@ $3Dmol.Renderer = function(parameters) {
 
         renderObjects(scene.__webglObjects, true, "opaque", camera, lights,
                 fog, false, material);
-                
+
         // Render embedded labels (sprites)
         renderSprites(scene, camera, false);
-        
+
         // prime depth buffer
         renderObjects(scene.__webglObjects, true, "blank", camera, lights, fog,
                 true, material);
@@ -1201,14 +1201,14 @@ $3Dmol.Renderer = function(parameters) {
             renderObjects(scene.__webglObjects, false, "volumetric", camera,
                     lights, fog, true, material);
         }
-        
+
 
         this.renderFrameBuffertoScreen();
         this.setDepthTest(true);
         this.setDepthWrite(true);
-        
+
         // Render floating labels (sprites)
-        renderSprites(scene, camera, true);        
+        renderSprites(scene, camera, true);
     };
 
     function renderSprites(scene, camera, inFront) {
@@ -1229,7 +1229,7 @@ $3Dmol.Renderer = function(parameters) {
         _lightsNeedUpdate = true;
 
         sprites.render(scene, camera, _currentWidth, _currentHeight, inFront);
-        
+
         // Reset state a
         _currentGeometryGroupHash = -1;
         _currentProgram = null;
@@ -1239,32 +1239,32 @@ $3Dmol.Renderer = function(parameters) {
         _oldDepthTest = -1;
         _oldDoubleSided = -1;
         _currentMaterialId = -1;
-        _oldFlipSided = -1;       
+        _oldFlipSided = -1;
     }
 
     //reinitialize framebuffer without the depth texture attached so we can read to it
     //do not allocate new textures
     this.reinitFrameBuffer = function() {
         // only needed/works with webgl2
-        if (isWebGL1()) return; 
+        if (isWebGL1()) return;
 
         // Create and bind the framebuffer
         _fb = _gl.createFramebuffer();
         _gl.bindFramebuffer(_gl.FRAMEBUFFER, _fb);
-        _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_2D, _targetTexture, 0);                                      
-    };    
-    
+        _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_2D, _targetTexture, 0);
+    };
+
     //setup framebuffer for drawing into, assumes buffers already allocated
     this.setFrameBuffer = function() {
-        if (isWebGL1() || !_fb) return; 
+        if (isWebGL1() || !_fb) return;
         let width = _viewportWidth;
         let height = _viewportHeight;
-        
+
         //when using framebuffer, always draw from origin, will shift the viewport when we render
         _gl.enable(_gl.SCISSOR_TEST);
         _gl.scissor(0,0, width, height);
         _gl.viewport(0,0, width, height);
-        
+
         //color texture
         _gl.bindTexture(_gl.TEXTURE_2D, _targetTexture);
         _gl.texImage2D(_gl.TEXTURE_2D, 0, _gl.RGBA, width, height, 0, _gl.RGBA, _gl.UNSIGNED_BYTE, null);
@@ -1272,7 +1272,7 @@ $3Dmol.Renderer = function(parameters) {
         _gl.texParameteri(_gl.TEXTURE_2D, _gl.TEXTURE_MAG_FILTER, _gl.LINEAR);
         _gl.texParameteri(_gl.TEXTURE_2D, _gl.TEXTURE_WRAP_S, _gl.CLAMP_TO_EDGE);
         _gl.texParameteri(_gl.TEXTURE_2D, _gl.TEXTURE_WRAP_T, _gl.CLAMP_TO_EDGE);
-        
+
         //depth texture
         _gl.bindTexture(_gl.TEXTURE_2D, _depthTexture);
         _gl.texImage2D(_gl.TEXTURE_2D, 0, _gl.DEPTH_COMPONENT32F, width, height, 0, _gl.DEPTH_COMPONENT, _gl.FLOAT, null);
@@ -1280,38 +1280,38 @@ $3Dmol.Renderer = function(parameters) {
         _gl.texParameteri(_gl.TEXTURE_2D, _gl.TEXTURE_MAG_FILTER, _gl.NEAREST);
         _gl.texParameteri(_gl.TEXTURE_2D, _gl.TEXTURE_WRAP_S, _gl.CLAMP_TO_EDGE);
         _gl.texParameteri(_gl.TEXTURE_2D, _gl.TEXTURE_WRAP_T, _gl.CLAMP_TO_EDGE);
-        
+
         //bind fb
         _gl.bindFramebuffer(_gl.FRAMEBUFFER, _fb);
         _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.COLOR_ATTACHMENT0, _gl.TEXTURE_2D, _targetTexture, 0);
         _gl.framebufferTexture2D(_gl.FRAMEBUFFER, _gl.DEPTH_ATTACHMENT,  _gl.TEXTURE_2D, _depthTexture, 0);
-          
+
     };
 
     //allocate buffers for framebuffer, needs to be called with every resize
     this.initFrameBuffer = function() {
         // only needed/works with webgl2
-        if (isWebGL1()) return; 
-        
-        
+        if (isWebGL1()) return;
+
+
         let width = _viewportWidth;
         let height = _viewportHeight;
-        
+
         //when using framebuffer, always draw from origin, will shift the viewport when we render
         _gl.enable(_gl.SCISSOR_TEST);
         _gl.scissor(0,0, width, height);
         _gl.viewport(0,0, width, height);
-        
+
         //create textures and frame buffer, will be initialized in setFrameBuffer
         _targetTexture = _gl.createTexture();
         _depthTexture = _gl.createTexture();
         _fb = _gl.createFramebuffer();
-       
+
         // build screenshader
         var screenshader = $3Dmol.ShaderLib.screen;
-        
+
         _screenshader = buildProgram(screenshader.fragmentShader,
-            screenshader.vertexShader, screenshader.uniforms, {});  
+            screenshader.vertexShader, screenshader.uniforms, {});
         _vertexattribpos = _gl.getAttribLocation(_screenshader, 'vertexPosition');
         // create the vertex array and attrib array for the full screenquad
         var verts = [
@@ -1327,13 +1327,13 @@ $3Dmol.Renderer = function(parameters) {
         _screenQuadVBO = _gl.createBuffer();
         _gl.bindBuffer(_gl.ARRAY_BUFFER, _screenQuadVBO);
         _gl.bufferData(_gl.ARRAY_BUFFER, new Float32Array(verts), _gl.STATIC_DRAW);
-          
-    };    
-    
+
+    };
+
     this.renderFrameBuffertoScreen = function(){
         // only needed/works with webgl2
-        if (isWebGL1() || _fb === null) return; 
-        
+        if (isWebGL1() || _fb === null) return;
+
         this.setViewport(); //draw texture in correct viewport
 
         // bind default framebuffer
@@ -1359,10 +1359,10 @@ $3Dmol.Renderer = function(parameters) {
 
         // Draw 6 vertexes => 2 triangles:
         _gl.drawArrays(_gl.TRIANGLES, 0, 6);
-        
+
     };
 
-    
+
     this.initWebGLObjects = function(scene) {
 
         if (!scene.__webglObjects) {
@@ -1585,7 +1585,7 @@ $3Dmol.Renderer = function(parameters) {
         else {
             //normal, non-instanced case
             _gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglVertexBuffer);
-            _gl.bufferData(_gl.ARRAY_BUFFER, vertexArray, hint);            
+            _gl.bufferData(_gl.ARRAY_BUFFER, vertexArray, hint);
         }
         // color buffers
         _gl.bindBuffer(_gl.ARRAY_BUFFER, geometryGroup.__webglColorBuffer);
@@ -1697,7 +1697,7 @@ $3Dmol.Renderer = function(parameters) {
                     filterFallback(texture.magFilter));
             _gl.texParameteri(textureType, _gl.TEXTURE_MIN_FILTER,
                     filterFallback(texture.minFilter));
-            
+
         } else { // 3Dtexture
             _gl.texParameteri(textureType, _gl.TEXTURE_WRAP_S,
                 _gl.CLAMP_TO_EDGE);
@@ -1705,7 +1705,7 @@ $3Dmol.Renderer = function(parameters) {
                 _gl.CLAMP_TO_EDGE);
             _gl.texParameteri(textureType, _gl.TEXTURE_WRAP_R,
                 _gl.CLAMP_TO_EDGE);
-                
+
             if(_extColorBufferFloat && _extFloatLinear) {
               //linear interpolation isn't supported by default (despite being the default??)
               _gl.texParameteri(textureType, _gl.TEXTURE_MAG_FILTER,_gl.LINEAR);
@@ -1714,21 +1714,21 @@ $3Dmol.Renderer = function(parameters) {
               _gl.texParameteri(textureType, _gl.TEXTURE_MAG_FILTER,_gl.NEAREST);
               _gl.texParameteri(textureType, _gl.TEXTURE_MIN_FILTER,_gl.NEAREST);
             }
-                
+
         }
 
     }
-    
+
     this.getYRatio = function() {
       if(this.rows !== undefined && this.row !== undefined) return this.rows;
       return 1;
     };
-    
+
     this.getXRatio = function() {
         if(this.cols !== undefined && this.col !== undefined) return this.cols;
         return 1;
-    };     
-    
+    };
+
     this.getAspect = function(width,height){
         if(width == undefined || height == undefined){
             width = _canvas.width;
@@ -1761,8 +1761,8 @@ $3Dmol.Renderer = function(parameters) {
             _gl.pixelStorei(_gl.UNPACK_FLIP_Y_WEBGL, texture.flipY);
             _gl.pixelStorei(_gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, texture.premultiplyAlpha);
             _gl.pixelStorei(_gl.UNPACK_ALIGNMENT, texture.unpackAlignment);
-            _gl.pixelStorei(_gl.PACK_ALIGNMENT, texture.unpackAlignment);  
-            
+            _gl.pixelStorei(_gl.PACK_ALIGNMENT, texture.unpackAlignment);
+
             var glFormat = paramToGL(texture.format), glType = paramToGL(texture.type);
 
             if(!is3D) {
@@ -1784,10 +1784,10 @@ $3Dmol.Renderer = function(parameters) {
               }
             } else { //3D
               setTextureParameters(_gl.TEXTURE_3D, texture);
-              _gl.texImage3D(_gl.TEXTURE_3D, 0, _gl.R32F, texture.image.size.z, texture.image.size.y, 
+              _gl.texImage3D(_gl.TEXTURE_3D, 0, _gl.R32F, texture.image.size.z, texture.image.size.y,
                   texture.image.size.x, 0, _gl.RED, _gl.FLOAT, texture.image.data);
             }
-                      
+
             texture.needsUpdate = false;
 
             if (texture.onUpdate)
@@ -1904,14 +1904,14 @@ $3Dmol.Renderer = function(parameters) {
         } catch (error) {
 
             console.error(error);
-        }              
- 
+        }
+
     }
 
     function isWebGL1() {
       return _webglversion == 1;
     }
-    
+
     this.supportsVolumetric = function() { return !isWebGL1(); };
 
     function setDefaultGLState() {

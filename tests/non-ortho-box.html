@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Testing 3D for non-orthogonal boxes</title>
+    <script src="../build/3Dmol.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <div class="viewer" id="boxi"></div>
+    <style media="screen">
+        .viewer {
+          position: relative;
+          height: 400px;
+          width: 400px;
+
+        }
+    </style>
+    <script type="text/javascript">
+      $(function(){
+        var element = $('#boxi');
+        var config = { backgroundColor: 'lightgrey'}
+        var viewer = $3Dmol.createViewer(element, config);
+
+        $.get('test_structs/h-bn.xyz', function(data){
+          viewer.addModel(data, "xyz");
+          viewer.setStyle({}, {stick:{}});
+          viewer.zoomTo();
+          viewer.render();
+        });
+
+        $.get('test_structs/h-bn.cube', function(data){
+        //$.get('test_structs/benzene-homo.cube', function(data){
+          var voldata = new $3Dmol.VolumeData(data, "cube");
+          if(viewer.hasVolumetricRender()) {
+            viewer.addVolumetricRender(voldata, {transferfn: [{color: "blue", opacity: .075, value: 0.1},
+                                                                        {color: "blue", opacity: .001, value: 0.01},
+                                                                        {color: "white", opacity: 0, value: 0},
+                                                                        {color: "red", opacity: .001, value: -0.01},
+                                                                        {color: "red", opacity: .075, value: -0.1}]});
+          } else {
+            viewer.addIsosurface(voldata, {isoval: 0.01, color: "blue", alpha: 0.95, smoothness: 10});
+            viewer.addIsosurface(voldata, {isoval: -0.01, color: "red", alpha: 0.95, smoothness: 10});
+          }
+
+          viewer.setStyle({}, {stick:{}});
+          viewer.zoomTo();
+          viewer.render();
+        }, 'text');
+      });
+
+    </script>
+
+  </body>
+</html>

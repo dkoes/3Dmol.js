@@ -9,7 +9,7 @@ $3Dmol.Material = function () {
     this.id = $3Dmol.MaterialIdCount ++;
 
     this.name = '';
-    
+
     //TODO: Which of these instance variables can I remove??
     this.side = $3Dmol.FrontSide;
 
@@ -18,7 +18,7 @@ $3Dmol.Material = function () {
 
     this.depthTest = true;
     this.depthWrite = true;
-    
+
     this.stencilTest = true;
 
     this.polygonOffset = false;
@@ -117,31 +117,31 @@ $3Dmol.MaterialIdCount = 0;
 //Line basic material
 /** @constructor */
 $3Dmol.LineBasicMaterial = function(parameters) {
-    
+
     $3Dmol.Material.call(this);
-    
+
     this.color = new $3Dmol.Color(0xffffff);
-    
+
     this.linewidth = 1;
     this.linecap = 'round';
     this.linejoin = 'round';
-    
+
     this.vertexColors = false;
-    
+
     this.fog = true;
     this.shaderID = "basic";
     this.setValues(parameters);
-    
+
 };
 
 $3Dmol.LineBasicMaterial.prototype = Object.create($3Dmol.Material.prototype);
 
 $3Dmol.LineBasicMaterial.prototype.clone = function() {
-  
+
     var material = new $3Dmol.LineBasicMaterial();
-    
+
     $3Dmol.Material.prototype.clone.call(this, material);
-    
+
     material.color.copy(this.color);
     return material;
 };
@@ -149,105 +149,105 @@ $3Dmol.LineBasicMaterial.prototype.clone = function() {
 //Mesh Lambert material
 /** @constructor */
 $3Dmol.MeshLambertMaterial = function(parameters) {
-    
+
     $3Dmol.Material.call(this);
-    
+
     this.color = new $3Dmol.Color(0xffffff);
     this.ambient = new $3Dmol.Color(0xfffff);
     this.emissive = new $3Dmol.Color(0x000000);
-    
+
     //TODO: Which of these instance variables do I really need?
     this.wrapAround = false;
     this.wrapRGB = new $3Dmol.Vector3(1,1,1);
-    
+
     this.map = null;
-    
+
     this.lightMap = null;
-    
+
     this.specularMap = null;
-    
+
     this.envMap = null;
     this.reflectivity = 1;
     this.refractionRatio = 0.98;
-    
+
     this.fog = true;
-    
+
     this.wireframe = false;
     this.wireframeLinewidth = 1;
     this.wireframeLinecap = 'round';
     this.wireframeLinejoin = 'round';
-    
+
     this.shading = $3Dmol.SmoothShading;
     this.shaderID = "lambert";
     this.vertexColors = $3Dmol.NoColors;
-    
+
     this.skinning = false;
-    
+
     this.setValues(parameters);
-    
+
 };
 
 $3Dmol.MeshLambertMaterial.prototype = Object.create($3Dmol.Material.prototype);
 
 $3Dmol.MeshLambertMaterial.prototype.clone = function(material) {
-  
+
     if ( typeof material === "undefined" ) material = new $3Dmol.MeshLambertMaterial();
-    
+
     $3Dmol.Material.prototype.clone.call(this, material);
-    
+
     material.color.copy(this.color);
     material.ambient.copy(this.ambient);
     material.emissive.copy(this.emissive);
-    
+
     material.wrapAround = this.wrapAround;
     material.wrapRGB.copy(this.wrapRGB);
-    
+
     material.map = this.map;
-    
+
     material.lightMap = this.lightMap;
-    
+
     material.specularMap = this.specularMap;
-    
+
     material.envMap = this.envMap;
     material.combine = this.combine;
     material.reflectivity = this.reflectivity;
     material.refractionRatio = this.refractionRatio;
-    
+
     material.fog = this.fog;
-    
+
     material.shading = this.shading;
     material.shaderID = this.shaderID;
     material.vertexColors = this.vertexColors;
-    
+
     material.skinning = this.skinning;
     material.morphTargets = this.morphTargets;
     material.morphNormals = this.morphNormals;
-    
+
     return material;
-    
+
 };
 
 //Double sided Mesh Lambert material
 /** @constructor */
 $3Dmol.MeshDoubleLambertMaterial = function(parameters) {
-    
+
     $3Dmol.MeshLambertMaterial.call(this, parameters);
 
     this.shaderID = "lambertdouble";
-    this.side = $3Dmol.DoubleSide;    
-    
+    this.side = $3Dmol.DoubleSide;
+
 };
 
 $3Dmol.MeshDoubleLambertMaterial.prototype = Object.create($3Dmol.MeshLambertMaterial.prototype);
 
 $3Dmol.MeshDoubleLambertMaterial.prototype.clone = function() {
-  
+
     var material = new $3Dmol.MeshDoubleLambertMaterial();
-    
+
     $3Dmol.MeshLambertMaterial.prototype.clone.call(this, material);
-        
+
     return material;
-    
+
 };
 
 //Outlined Mesh Lamert material
@@ -261,7 +261,7 @@ $3Dmol.MeshOutlineMaterial = function(parameters) {
     this.outlineColor= parameters.color || new $3Dmol.Color(0.0,0.0,0.0);
     this.outlineWidth= parameters.width || 0.1;
     this.outlinePushback= parameters.pushback || 1.0;
-    
+
 };
 
 $3Dmol.MeshOutlineMaterial.prototype = Object.create($3Dmol.Material.prototype);
@@ -279,43 +279,43 @@ $3Dmol.MeshOutlineMaterial.prototype.clone = function(material) {
 //Imposter material
 /** @constructor */
 $3Dmol.ImposterMaterial = function(parameters) {
-  
+
   $3Dmol.Material.call(this);
-  
+
   this.color = new $3Dmol.Color(0xffffff);
   this.ambient = new $3Dmol.Color(0xfffff);
   this.emissive = new $3Dmol.Color(0x000000);
   this.imposter = true;
-  
+
   //TODO: Which of these instance variables do I really need?
   this.wrapAround = false;
   this.wrapRGB = new $3Dmol.Vector3(1,1,1);
-  
+
   this.map = null;
-  
+
   this.lightMap = null;
-  
+
   this.specularMap = null;
-  
+
   this.envMap = null;
   this.reflectivity = 1;
   this.refractionRatio = 0.98;
-  
+
   this.fog = true;
-  
+
   this.wireframe = false;
   this.wireframeLinewidth = 1;
   this.wireframeLinecap = 'round';
   this.wireframeLinejoin = 'round';
-  
+
   this.shading = $3Dmol.SmoothShading;
   this.shaderID = null;
   this.vertexColors = $3Dmol.NoColors;
-  
+
   this.skinning = false;
-  
+
   this.setValues(parameters);
-  
+
 };
 
 $3Dmol.ImposterMaterial.prototype = Object.create($3Dmol.Material.prototype);
@@ -323,49 +323,49 @@ $3Dmol.ImposterMaterial.prototype = Object.create($3Dmol.Material.prototype);
 $3Dmol.ImposterMaterial.prototype.clone = function() {
 
   var material = new $3Dmol.ImposterMaterial();
-  
+
   $3Dmol.Material.prototype.clone.call(this, material);
-  
+
   material.color.copy(this.color);
   material.ambient.copy(this.ambient);
   material.emissive.copy(this.emissive);
-  
+
   material.wrapAround = this.wrapAround;
   material.wrapRGB.copy(this.wrapRGB);
-  
+
   material.map = this.map;
-  
+
   material.lightMap = this.lightMap;
-  
+
   material.specularMap = this.specularMap;
-  
+
   material.envMap = this.envMap;
   material.combine = this.combine;
   material.reflectivity = this.reflectivity;
   material.refractionRatio = this.refractionRatio;
-  
+
   material.fog = this.fog;
-  
+
   material.shading = this.shading;
   material.shaderID = this.shaderID;
   material.vertexColors = this.vertexColors;
-  
+
   material.skinning = this.skinning;
   material.morphTargets = this.morphTargets;
   material.morphNormals = this.morphNormals;
-  
+
   return material;
-  
+
 };
 
 
 $3Dmol.SphereImposterMaterial = function(parameters) {
-    
+
     $3Dmol.ImposterMaterial.call(this);
 
-    this.shaderID = "sphereimposter";    
+    this.shaderID = "sphereimposter";
     this.setValues(parameters);
-    
+
 };
 
 $3Dmol.SphereImposterMaterial.prototype = Object.create($3Dmol.ImposterMaterial.prototype);
@@ -379,7 +379,7 @@ $3Dmol.SphereImposterMaterial.prototype.clone = function() {
 
 
 $3Dmol.SphereImposterOutlineMaterial = function(parameters) {
-    
+
     $3Dmol.ImposterMaterial.call(this);
     parameters = parameters || {};
 
@@ -387,9 +387,9 @@ $3Dmol.SphereImposterOutlineMaterial = function(parameters) {
     this.outlineColor= parameters.color || new $3Dmol.Color(0.0,0.0,0.0);
     this.outlineWidth= parameters.width || 0.1;
     this.outlinePushback= parameters.pushback || 1.0;
-    
+
     this.setValues(parameters);
-    
+
 };
 
 $3Dmol.SphereImposterOutlineMaterial.prototype = Object.create($3Dmol.ImposterMaterial.prototype);
@@ -406,12 +406,12 @@ $3Dmol.SphereImposterOutlineMaterial.prototype.clone = function() {
 
 
 $3Dmol.StickImposterMaterial = function(parameters) {
-    
+
     $3Dmol.ImposterMaterial.call(this);
 
-    this.shaderID = "stickimposter";    
+    this.shaderID = "stickimposter";
     this.setValues(parameters);
-    
+
 };
 
 $3Dmol.StickImposterMaterial.prototype = Object.create($3Dmol.ImposterMaterial.prototype);
@@ -425,7 +425,7 @@ $3Dmol.StickImposterMaterial.prototype.clone = function() {
 
 
 $3Dmol.StickImposterOutlineMaterial = function(parameters) {
-    
+
     $3Dmol.ImposterMaterial.call(this);
     parameters = parameters || {};
 
@@ -433,9 +433,9 @@ $3Dmol.StickImposterOutlineMaterial = function(parameters) {
     this.outlineColor= parameters.color || new $3Dmol.Color(0.0,0.0,0.0);
     this.outlineWidth= parameters.width || 0.1;
     this.outlinePushback= parameters.pushback || 1.0;
-    
+
     this.setValues(parameters);
-    
+
 };
 
 $3Dmol.StickImposterOutlineMaterial.prototype = Object.create($3Dmol.ImposterMaterial.prototype);
@@ -538,9 +538,9 @@ $3Dmol.InstancedMaterial.prototype.clone = function() {
 //Volumetric material
 /** @constructor */
 $3Dmol.VolumetricMaterial = function(parameters) {
-    
+
     $3Dmol.Material.call(this);
-    
+
     this.transparent = false;
     this.volumetric = true;
 
@@ -555,11 +555,12 @@ $3Dmol.VolumetricMaterial = function(parameters) {
     this.transfermin = -1.0;
     this.transfermax = 1.0;
     this.subsamples = 5.0;
+    this.textmap = null;
 
     // this.fog = true; // TODO: to integrate the new shader with the fog stuff
 
     this.shaderID = "volumetric";
-    this.side = $3Dmol.FrontSide;    
+    this.side = $3Dmol.FrontSide;
 
     this.setValues(parameters);
 };
@@ -578,56 +579,56 @@ $3Dmol.VolumetricMaterial.prototype.clone = function() {
 //Sprite material
 /** @constructor */
 $3Dmol.SpriteMaterial = function(parameters) {
-    
+
     $3Dmol.Material.call(this);
-    
+
     this.color = new $3Dmol.Color(0xffffff);
     this.map = new $3Dmol.Texture();
-    
+
     this.useScreenCoordinates = true;
     this.depthTest = !this.useScreenCoordinates;
     this.sizeAttenuation = !this.useScreenCoordinates;
     this.scaleByViewPort = !this.sizeAttenuation;
     this.alignment = $3Dmol.SpriteAlignment.center.clone();
-    
+
     this.fog = false; // use scene fog
-    
+
     this.uvOffset = new $3Dmol.Vector2(0, 0);
     this.uvScale = new $3Dmol.Vector2(1, 1);
-    
+
     this.setValues(parameters);
-    
+
     parameters = parameters || {};
-    
+
     if (parameters.depthTest === undefined)
         this.depthTest = !this.useScreenCoordinates;
     if (parameters.sizeAttenuation === undefined)
         this.sizeAttenuation = !this.useScreenCoordinates;
     if (parameters.scaleByViewPort === undefined)
         this.scaleByViewPort = !this.sizeAttenuation;
-    
+
 };
 
 $3Dmol.SpriteMaterial.prototype = Object.create($3Dmol.Material.prototype);
 
 $3Dmol.SpriteMaterial.prototype.clone = function() {
-    
+
     var material = new $3Dmol.SpriteMaterial();
-    
+
     $3Dmol.Material.prototype.clone.call(this, material);
-    
+
     material.color.copy(this.color);
     material.map = this.map;
-    
+
     material.useScreenCoordinates = this.useScreenCoordinates;
     material.sizeAttenuation = this.sizeAttenuation;
     material.scaleByViewport = this.scaleByViewPort;
     material.alignment.copy(this.alignment);
-    
+
     material.uvOffset.copy(this.uvOffset);
-    
+
     return material;
-    
+
 };
 
 //Alignment for Sprites
@@ -651,94 +652,94 @@ $3Dmol.SpriteAlignment.bottomRight = new $3Dmol.Vector2(-1, 1);
 $3Dmol.Texture = function(image, is3D) {
 
     $3Dmol.EventDispatcher.call(this);
-    
+
     this.id = $3Dmol.TextureIdCount++;
-    
+
     this.name = "";
-    
+
     this.image = image;
-    
+
     this.mapping = new $3Dmol.UVMapping();
-    
+
     this.wrapS = $3Dmol.ClampToEdgeWrapping;
     this.wrapT = $3Dmol.ClampToEdgeWrapping;
-        
+
     this.anisotropy = 1;
-    
+
     if (is3D){
         this.format = $3Dmol.RFormat;
         this.type = $3Dmol.FloatType;
 
         this.premultiplyAlpha = false;
         this.flipY = false;
-        
-        this.unpackAlignment = 1;    
-        
+
+        this.unpackAlignment = 1;
+
         this.magFilter = $3Dmol.NearestFilter;
         this.minFilter = $3Dmol.NearestFilter;
     } else {
         this.format = $3Dmol.RGBAFormat;
         this.type = $3Dmol.UnsignedByteType;
-        
+
         this.offset = new $3Dmol.Vector2(0, 0);
         this.repeat = new $3Dmol.Vector2(1, 1);
 
         this.premultiplyAlpha = false;
         this.flipY = true;
-        this.unpackAlignment = 4;    
+        this.unpackAlignment = 4;
 
         this.magFilter = $3Dmol.LinearFilter;
-        this.minFilter = $3Dmol.LinearMipMapLinearFilter;    
-        
+        this.minFilter = $3Dmol.LinearMipMapLinearFilter;
+
     }
 
-    
+
     this.needsUpdate = false;
     this.onUpdate = null;
-    
+
 };
 
 $3Dmol.Texture.prototype = {
 
     constructor : $3Dmol.Texture,
-    
+
     clone : function(texture) {
-        
+
         if (texture === undefined)
             texture = new $3Dmol.Texture();
-        
+
         texture.image = this.image;
-        
+
         texture.mapping = this.mapping;
-        
+
         texture.wrapS = this.wrapS;
         texture.wrapT = this.wrapT;
-        
+
         texture.magFilter = this.magFilter;
         texture.minFilter = this.minFilter;
-        
+
         texture.anisotropy = this.anisotropy;
-        
+
         texture.format = this.format;
         texture.type = this.type;
-        
+
         texture.offset.copy(this.offset);
         texture.repeat.copy(this.repeat);
-        
+
         texture.premultiplyAlpha = this.premultiplyAlpha;
         texture.flipY = this.flipY;
         texture.unpackAlignment = this.unpackAlignment;
-        
+
         return texture;
-        
+
     },
-    
+
     dispose : function() {
-        
+
         this.dispatchEvent( {type: 'dispose'});
-        
-    }    
-    
+
+    }
+
 };
 
 $3Dmol.TextureIdCount = 0;
@@ -783,5 +784,5 @@ $3Dmol.FloatType = 1010;
 
 //Pixel formats
 $3Dmol.RGBAFormat = 1021;
-$3Dmol.RFormat = 1022; 
+$3Dmol.RFormat = 1022;
 $3Dmol.R32Format = 1023;

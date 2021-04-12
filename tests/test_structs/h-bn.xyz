@@ -1,0 +1,4 @@
+     2
+Dimensions = 3; PeriodicDimensions = 2; BoxShape = parallelepiped; LatticeVectors[Ang] = [    2.502813    0.000000    0.000000], [   -1.251407    2.167500    0.000000], [    0.000000    0.000000   21.167088]
+B                  0.000000    0.000000    0.000000
+N                  1.251407   -0.722500    0.000000
